@@ -11,7 +11,7 @@ $ProvisioningPath = "$env:PROGRAMDATA\Microsoft\Provisioning"
 # =============================================================================
 
 # Define the transcript file location
-$TranscriptFile = "$ProvisioningPath\$Date-secrets-install-url.txt"
+$TranscriptFile = "$ProvisioningPath\$Date-provisioning.txt"
 
 # Define the name of the software to check
 $secretZip = "$ProvisioningPath\secrets.zip"
