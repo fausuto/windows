@@ -34,6 +34,29 @@ $secretArgs = "secret", "get", "344563b3-c03f-4c15-8e69-b3720103da6c"
 # Start a Log file
 Start-Transcript -Path "$TranscriptFile"
 
+# Powershell logging function with here-string and indentation cleanup
+function Write-CleanLog
+{
+    param (
+        [Parameter(Position = 0)]
+        [string[]]$Messages,
+        [string]$Color = "White" # Default color
+    )
+
+    # Build the log lines
+    foreach ($msg in $Messages)
+    {
+        if ([string]::IsNullOrWhiteSpace($msg))
+        {
+            Write-Host "" # True blank line
+        } else
+        {
+            $timestamp = Get-Date -Format 'HH:mm:ss'
+            Write-Host "[$timestamp] $msg" -ForegroundColor $Color
+        }
+    }
+}
+
 # Best practice: Use a function for reusable logic and clear scope
 function Test-InternetConnection
 {
@@ -49,7 +72,10 @@ function Test-InternetConnection
 
     try
     {
-        Write-Host "Testing internet connection. Target: $Target" -ForegroundColor Green
+        Write-CleanLog @(
+            "",
+            "Testing internet connection. Target: $Target"
+        ) -Color Green
         $connected = $false
         do
         {
@@ -71,8 +97,10 @@ function Test-InternetConnection
             }
         } while (-not $connected)
 
-        Write-Host "Network connection successful!" -ForegroundColor Green
-        return $true
+        Write-CleanLog @(
+            "",
+            "Network connection successful!"
+        ) -Color Green
     } finally
     {
         # Restore the original progress preference
